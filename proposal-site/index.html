@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Will you be mine?</title>
+  <title>Out?</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
     * {
@@ -116,7 +116,7 @@
       left: 75%;
       top: 50%;
       transform: translate(0.5rem, -50%);
-      transition: left 0.15s ease-out, top 0.15s ease-out;
+      transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.15s ease-out;
       background: linear-gradient(135deg, #a8edea, #fed6e3);
       color: #5a4a6a;
       font-weight: 700;
@@ -167,7 +167,7 @@
   </div>
   <div class="card success" id="success">
     <h2>Yay!</h2>
-    <p>You said yes. &lt;3</p>
+    <p>Lucky you. &lt;3</p>
   </div>
 
   <script>
@@ -176,6 +176,10 @@
     const proposal = document.getElementById('proposal');
     const success = document.getElementById('success');
     const yesBtn = document.getElementById('yesBtn');
+
+    let noScale = 1;
+    const minScale = 0.4;
+    const shrinkBy = 0.92;
 
     function getRandomPosition() {
       const w = buttonContainer.offsetWidth;
@@ -189,19 +193,18 @@
       return { x, y };
     }
 
-    noBtn.addEventListener('mouseenter', function moveAway() {
+    function shrinkAndMove() {
+      noScale = Math.max(minScale, noScale * shrinkBy);
       const pos = getRandomPosition();
       noBtn.style.left = pos.x + 'px';
       noBtn.style.top = pos.y + 'px';
-      noBtn.style.transform = 'none';
-    });
+      noBtn.style.transform = 'scale(' + noScale + ')';
+    }
 
+    noBtn.addEventListener('mouseenter', shrinkAndMove);
     noBtn.addEventListener('click', function(e) {
       e.preventDefault();
-      const pos = getRandomPosition();
-      noBtn.style.left = pos.x + 'px';
-      noBtn.style.top = pos.y + 'px';
-      noBtn.style.transform = 'none';
+      shrinkAndMove();
     });
 
     yesBtn.addEventListener('click', function() {
